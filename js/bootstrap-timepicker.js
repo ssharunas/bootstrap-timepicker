@@ -36,10 +36,10 @@
     var Timepicker = function(element, options) {
         this.$element = $(element);
         this.options = $.extend({}, $.fn.timepicker.defaults, options, this.$element.data());
-        this.minuteStep = this.options.minuteStep || this.minuteStep;
-        this.secondStep = this.options.secondStep || this.secondStep;
+        this.minuteStep = this.options.minuteStep || this.minuteStep || 0;
+        this.secondStep = this.options.secondStep || this.secondStep || 0;
         this.showMeridian = this.options.showMeridian || this.showMeridian;
-        this.showSeconds = this.options.showSeconds || this.showSeconds;
+        this.showSeconds = this.options.showSeconds || this.showSeconds || 0;
         this.showInputs = this.options.showInputs || this.showInputs;
         this.disableFocus = this.options.disableFocus || this.disableFocus;
         this.template = this.options.template || this.template;
@@ -68,7 +68,8 @@
                     this.$element.on({
                         focus: $.proxy(this.showWidget, this),
                         click: $.proxy(this.showWidget, this),
-                        blur: $.proxy(this.blurElement, this)
+                        blur: $.proxy(this.blurElement, this),
+                        keydown: $.proxy(this.inputKeydown, this)
                     });
                 } else {
                     this.$element.on({
@@ -296,6 +297,18 @@
             
             if (e.keyCode !== 0 && e.keyCode !== 8 && e.keyCode !== 9 && e.keyCode !== 46) {
                 e.preventDefault();
+            }
+        }
+
+        , inputKeydown: function (e) {
+            switch (e.keyCode) {
+                case 0: //input
+                    break;
+                case 9: //tab
+                case 27: // escape
+                case 13: // enter
+                    this.hideWidget();
+                    break;
             }
         }
 
@@ -647,6 +660,7 @@
             var newVal = this.minute - this.minuteStep;
             if (newVal < 0) {
                 this.decrementHour();
+                newVal += 60;
             }
 
             this.minute = newVal % 60;
@@ -656,6 +670,7 @@
             var newVal = this.second + this.secondStep - (this.second % this.secondStep);
             if (newVal > 59) {
                 this.incrementMinute();
+                newVal += 60;
             }
 
             this.second = newVal % 60;
