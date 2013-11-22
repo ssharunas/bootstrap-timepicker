@@ -36,10 +36,10 @@
     var Timepicker = function(element, options) {
         this.$element = $(element);
         this.options = $.extend({}, $.fn.timepicker.defaults, options, this.$element.data());
-        this.minuteStep = this.options.minuteStep || this.minuteStep || 0;
-        this.secondStep = this.options.secondStep || this.secondStep || 0;
+        this.minuteStep = this.options.minuteStep || $.fn.timepicker.defaults.minuteStep;
+        this.secondStep = this.options.secondStep || $.fn.timepicker.defaults.secondStep;
         this.showMeridian = this.options.showMeridian || this.showMeridian;
-        this.showSeconds = this.options.showSeconds || this.showSeconds || 0;
+        this.showSeconds = this.options.showSeconds || this.showSeconds;
         this.showInputs = this.options.showInputs || this.showInputs;
         this.disableFocus = this.options.disableFocus || this.disableFocus;
         this.template = this.options.template || this.template;
